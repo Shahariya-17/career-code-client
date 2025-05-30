@@ -105,6 +105,19 @@ async function run() {
         console.log(application);
         const result = await applicationsCollection.insertOne(application);
         res.send(result)
+    });
+
+    app.patch('/applications/:id', async(req, res) =>{
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)};
+        const updatedDoc = {
+            $set: {
+                status : req.body.status;
+            }
+        }
+
+        const result = await applicationsCollection.updateOne(filter, updatedDoc);
+        res.send(result);
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
